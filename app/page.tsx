@@ -8,11 +8,13 @@ export default function Home() {
   const [wallet, setWallet] = useState("");
 
   const handleConnect = async () => {
-    const result = await connectMetaMask();
-    if (!result) return;
+  const result = await connectMetaMask();
+  if (!result) return;
 
-    setWallet(result.address);
-  };
+  setWallet(result.address);
+
+  window.location.href = "https://smartfarmchain.netlify.app/login/";
+};
 
   return (
     <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">

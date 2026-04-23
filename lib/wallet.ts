@@ -1,12 +1,21 @@
 
+import MetaMaskSDK from "@metamask/sdk";
+
 export async function connectMetaMask() {
   if (typeof window === "undefined") return null;
 
-  const ethereum = (window as any).ethereum;
+  let ethereum = (window as any).ethereum;
 
+  // 🔥 MOBILE FIX
   if (!ethereum) {
-    alert("MetaMask not detected. Install MetaMask or open this site in MetaMask browser.");
-    return null;
+    const MMSDK = new MetaMaskSDK({
+      dappMetadata: {
+        name: "SmartFarmChain",
+        url: "https://smartfarmchain.netlify.app",
+      },
+    });
+
+    ethereum = MMSDK.getProvider();
   }
 
   try {
@@ -16,8 +25,7 @@ export async function connectMetaMask() {
 
     return { address: accounts[0] };
   } catch (error) {
-    console.error("MetaMask connection failed:", error);
-    alert("MetaMask connection failed or was cancelled.");
+    console.error("MetaMask SDK error:", error);
     return null;
   }
 }

@@ -1,10 +1,11 @@
+
 export async function connectMetaMask() {
   if (typeof window === "undefined") return null;
 
-  const { ethereum } = window as any;
+  const ethereum = (window as any).ethereum;
 
   if (!ethereum) {
-    alert("MetaMask not detected. Please install MetaMask.");
+    alert("MetaMask not detected. Install MetaMask or open this site in MetaMask browser.");
     return null;
   }
 
@@ -15,7 +16,8 @@ export async function connectMetaMask() {
 
     return { address: accounts[0] };
   } catch (error) {
-    console.error(error);
+    console.error("MetaMask connection failed:", error);
+    alert("MetaMask connection failed or was cancelled.");
     return null;
   }
 }

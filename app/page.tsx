@@ -46,11 +46,16 @@ export default function Home() {
             SmartFarmChain Dashboard
           </h2>
 
-          <p>
-            {wallet
-              ? `Connected: ${wallet}`
-              : "Connect your wallet to begin"}
-          </p>
+          {wallet ? (
+  <div>
+    <p>Connected: {wallet}</p>
+    <p style={{ color: "green", fontWeight: "bold" }}>
+      Welcome to SmartFarmChain Dashboard
+    </p>
+  </div>
+) : (
+  <p>Connect your wallet to begin</p>
+)}
         </div>
 
       </main>

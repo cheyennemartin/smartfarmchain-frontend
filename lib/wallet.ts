@@ -1,4 +1,3 @@
-
 import MetaMaskSDK from "@metamask/sdk";
 
 export async function connectMetaMask() {
@@ -6,7 +5,7 @@ export async function connectMetaMask() {
 
   let ethereum = (window as any).ethereum;
 
-  // 🔥 MOBILE FIX
+  // 🔥 THIS IS THE MOBILE FIX
   if (!ethereum) {
     const MMSDK = new MetaMaskSDK({
       dappMetadata: {
@@ -25,7 +24,7 @@ export async function connectMetaMask() {
 
     return { address: accounts[0] };
   } catch (error) {
-    console.error("MetaMask SDK error:", error);
+    console.error("MetaMask error:", error);
     return null;
   }
 }

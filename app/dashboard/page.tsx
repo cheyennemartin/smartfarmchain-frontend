@@ -1,3 +1,4 @@
+import { demoHarvests } from "@/lib/demoData";
 export default function DashboardPage() {
   return (
     <main style={{ padding: "20px" }}>
@@ -6,3 +7,12 @@ export default function DashboardPage() {
     </main>
   );
 }
+
+{demoHarvests.map((harvest) => (
+  <div key={harvest.id}>
+    <p>{harvest.crop}</p>
+    <p>{harvest.farmer}</p>
+    <p>{harvest.quantity}</p>
+    <p>{harvest.status}</p>
+  </div>
+))}

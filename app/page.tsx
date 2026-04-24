@@ -13,7 +13,9 @@ export default function Home() {
 
   setWallet(result.address);
 
-  window.location.href = "https://smartfarmchain.netlify.app/login/";
+  setTimeout(() => {
+    window.location.href = "https://smartfarmchain.netlify.app/login/";
+  }, 1000);
 };
 
   return (

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { demoHarvests } from "@/lib/demoData";
-import { getNetwork } from "@/lib/metamask";
 
 export default function DashboardPage() {
   const [network, setNetwork] = useState("");
@@ -10,7 +9,13 @@ export default function DashboardPage() {
   useEffect(() => {
     async function loadNetwork() {
       try {
-        const chainId = await getNetwork();
+        const ethereum = (window as unknown as { ethereum?: { request: (args: { method: string }) => Promise<string> } }).ethereum;
+        if (!ethereum) {
+          setNetwork("Wallet Not Connected");
+          return;
+        }
+
+        const chainId = await ethereum.request({ method: "eth_chainId" });
 
         if (chainId === "0xaa36a7") {
           setNetwork("Sepolia Testnet");
@@ -19,7 +24,7 @@ export default function DashboardPage() {
         } else {
           setNetwork("Unknown Network");
         }
-      } catch (error) {
+      } catch {
         setNetwork("Wallet Not Connected");
       }
     }

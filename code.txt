@@ -1,0 +1,32 @@
+import { MetaMaskSDK } from "@metamask/sdk";
+
+let MMSDK;
+
+export function getMetaMaskSDK() {
+  if (typeof window === "undefined") return null;
+
+  if (!MMSDK) {
+    MMSDK = new MetaMaskSDK({
+      dappMetadata: {
+        name: "SmartFarmChain",
+        url: window.location.href,
+      },
+      preferDesktop: false,
+    });
+  }
+
+  return MMSDK;
+}
+
+export async function connectMetaMask() {
+  const sdk = getMetaMaskSDK();
+  if (!sdk) return null;
+
+  const provider = sdk.getProvider();
+
+  const accounts = await provider.request({
+    method: "eth_requestAccounts",
+  });
+
+  return accounts[0];
+}

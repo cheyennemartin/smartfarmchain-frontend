@@ -1,26 +1,7 @@
-
-import { demoHarvests } from "@/lib/demoData";
-export default function DashboardPage() {
-  return (
-    <main style={{ padding: "20px" }}>
-      <h1>SmartFarmChain Dashboard</h1>
-      <p>Wallet connected successfully.</p>
-    </main>
-  );
-}
-
-{demoHarvests.map((harvest) => (
-  <div key={harvest.id}>
-    <p>{harvest.crop}</p>
-    <p>{harvest.farmer}</p>
-    <p>{harvest.quantity}</p>
-    <p>{harvest.status}</p>
-  </div>
-))}
-
 "use client";
 
 import { useEffect, useState } from "react";
+import { demoHarvests } from "@/lib/demoData";
 import { getNetwork } from "@/lib/metamask";
 
 export default function DashboardPage() {
@@ -28,14 +9,18 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function loadNetwork() {
-      const chainId = await getNetwork();
+      try {
+        const chainId = await getNetwork();
 
-      if (chainId === "0xaa36a7") {
-        setNetwork("Sepolia Testnet");
-      } else if (chainId === "0x1") {
-        setNetwork("Ethereum Mainnet");
-      } else {
-        setNetwork("Unknown Network");
+        if (chainId === "0xaa36a7") {
+          setNetwork("Sepolia Testnet");
+        } else if (chainId === "0x1") {
+          setNetwork("Ethereum Mainnet");
+        } else {
+          setNetwork("Unknown Network");
+        }
+      } catch (error) {
+        setNetwork("Wallet Not Connected");
       }
     }
 
@@ -43,15 +28,40 @@ export default function DashboardPage() {
   }, []);
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
+    <main className="p-6">
+      <h1 className="text-3xl font-bold mb-2">
+        SmartFarmChain Dashboard
+      </h1>
 
-      <p className="mt-2 text-gray-600">
-        Wallet integration enabled on: {network}
+      <p className="text-gray-600">
+        Wallet connected successfully.
       </p>
-<p className="text-green-600 mt-4">
-  Wallet integration will be enabled when connected to the live blockchain network.
-</p>
-    </div>
+
+      <p className="mt-2 text-blue-600">
+        Connected Network: {network}
+      </p>
+
+      <p className="text-green-600 mt-4 mb-6">
+        Wallet integration enabled when connected to live blockchain.
+      </p>
+
+      <h2 className="text-2xl font-semibold mb-4">
+        Harvest Records
+      </h2>
+
+      <div className="grid gap-4">
+        {demoHarvests.map((harvest) => (
+          <div
+            key={harvest.id}
+            className="border rounded-lg p-4 shadow-sm"
+          >
+            <p><strong>Crop:</strong> {harvest.crop}</p>
+            <p><strong>Farmer:</strong> {harvest.farmer}</p>
+            <p><strong>Quantity:</strong> {harvest.quantity}</p>
+            <p><strong>Status:</strong> {harvest.status}</p>
+          </div>
+        ))}
+      </div>
+    </main>
   );
 }
